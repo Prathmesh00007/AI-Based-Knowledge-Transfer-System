@@ -1,55 +1,90 @@
-# Local RAG System
+# Knowledge Transfer System
 
-This project implements a local Retrieval Augmented Generation (RAG) system that runs entirely on your machine. It uses local models for both text generation and embeddings, combined with a vector database for efficient information retrieval.
+This project implements a full-stack Knowledge Transfer System with a FastAPI backend and a React frontend. It supports semantic search, audio transcription, Jira/Confluence ingestion, and a custom NLP pipeline.
 
-## Prerequisites
+## Features
 
-1. Python 3.8 or higher
-2. Ollama installed (for running local LLMs)
-   - Download from: https://ollama.ai/
-   - Install and run the Ollama service
-   - Pull the Mistral model: `ollama pull mistral`
+- **Semantic Search:** Search knowledge units using semantic similarity (FAISS + Sentence Transformers).
+- **Jira Ingestion:** Import Jira issues and process them into knowledge units.
+- **Confluence Ingestion:** Bulk ingest Confluence documentation by space key.
+- **Audio Recording & Transcription:** Record audio and transcribe using Whisper.
+- **Pipeline Testing:** Test the NLP pipeline (summarization, NER, embeddings) on custom text.
+- **OAuth Login:** Atlassian OAuth2 login for secure access.
+
+## Backend (FastAPI)
+
+- Located in the [`app/`](app/) directory.
+- Uses MongoDB for storage, FAISS for vector search, and HuggingFace models for NLP.
+- Main entrypoint: [`app/main.py`](app/main.py)
+- Endpoints:
+  - `/search` — Semantic search
+  - `/ingest/jira` — Ingest Jira issues
+  - `/ingest/confluence/bulk` — Ingest Confluence docs
+  - `/record` — Record and transcribe audio
+  - `/test/pipeline` — Test the NLP pipeline
+  - `/login` — Atlassian OAuth login
+
+## Frontend (React)
+
+- Located in the [`my-kt-frontend/`](my-kt-frontend/) directory.
+- Built with Vite and React.
+- Components for search, ingestion, recording, and pipeline testing.
 
 ## Setup
 
-1. Create a virtual environment:
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
+### Backend
 
-2. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
+1. Create a virtual environment and install dependencies:
+    ```sh
+    cd app
+    python -m venv whisper-env
+    source whisper-env/bin/activate  # On Windows: whisper-env\Scripts\activate
+    pip install -r requirements.txt
+    ```
 
-3. Create a data directory and add your text documents:
-```bash
-mkdir data
-```
+2. Configure credentials in [`app/config.py`](app/config.py).
 
-## Usage
+3. Start MongoDB locally.
 
-1. Start the Ollama service (if not already running)
-2. Run the main script:
-```bash
-python rag_system.py
-```
+4. Run the FastAPI server:
+    ```sh
+    uvicorn app.main:app --reload
+    ```
 
-## Components
+### Frontend
 
-- **Local LLM**: Uses Ollama with Mistral model
-- **Embedding Model**: sentence-transformers (all-MiniLM-L6-v2)
-- **Vector Database**: ChromaDB
-- **RAG Implementation**: Custom implementation using LangChain
+1. Install dependencies:
+    ```sh
+    cd my-kt-frontend
+    npm install
+    ```
+
+2. Start the development server:
+    ```sh
+    npm run dev
+    ```
+
+3. Access the frontend at [http://localhost:5173](http://localhost:5173).
 
 ## Project Structure
 
 ```
 .
-├── README.md
-├── requirements.txt
+├── app/
+│   ├── main.py
+│   ├── pipeline.py
+│   ├── endpoints/
+│   ├── connectors/
+│   └── ...
+├── my-kt-frontend/
+│   ├── src/
+│   ├── package.json
+│   └── ...
+├── faiss_search.py
 ├── rag_system.py
-└── data/
-    └── sample_documents/
-``` 
+└── README.md
+```
+
+## License
+
+MIT License
