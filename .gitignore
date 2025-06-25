@@ -1,0 +1,3 @@
+whisper-env
+app/__pycache__/
+app/config.py
