@@ -1,90 +1,77 @@
-# Knowledge Transfer System
+# 🧠 AI-Driven Knowledge Transfer Assistant
 
-This project implements a full-stack Knowledge Transfer System with a FastAPI backend and a React frontend. It supports semantic search, audio transcription, Jira/Confluence ingestion, and a custom NLP pipeline.
+A production-ready AI-based knowledge transfer system designed to automate the onboarding and handover process by extracting, summarizing, organizing, and making searchable key project knowledge from tools like **Jira** and **Confluence**.
 
-## Features
+---
 
-- **Semantic Search:** Search knowledge units using semantic similarity (FAISS + Sentence Transformers).
-- **Jira Ingestion:** Import Jira issues and process them into knowledge units.
-- **Confluence Ingestion:** Bulk ingest Confluence documentation by space key.
-- **Audio Recording & Transcription:** Record audio and transcribe using Whisper.
-- **Pipeline Testing:** Test the NLP pipeline (summarization, NER, embeddings) on custom text.
-- **OAuth Login:** Atlassian OAuth2 login for secure access.
+## 📌 Overview
 
-## Backend (FastAPI)
+Knowledge transfer during employee onboarding or transition periods is often time-consuming and error-prone. This system leverages **Natural Language Processing (NLP)** and **LLMs** to streamline this process, ensuring that vital institutional knowledge is **captured, categorized, and queryable** — all from one central dashboard.
 
-- Located in the [`app/`](app/) directory.
-- Uses MongoDB for storage, FAISS for vector search, and HuggingFace models for NLP.
-- Main entrypoint: [`app/main.py`](app/main.py)
-- Endpoints:
-  - `/search` — Semantic search
-  - `/ingest/jira` — Ingest Jira issues
-  - `/ingest/confluence/bulk` — Ingest Confluence docs
-  - `/record` — Record and transcribe audio
-  - `/test/pipeline` — Test the NLP pipeline
-  - `/login` — Atlassian OAuth login
+> 🔍 Connect. Extract. Summarize. Search. Ask.
 
-## Frontend (React)
+---
 
-- Located in the [`my-kt-frontend/`](my-kt-frontend/) directory.
-- Built with Vite and React.
-- Components for search, ingestion, recording, and pipeline testing.
+## 🧪 Key Features
 
-## Setup
+- 🔗 **Integration with Jira & Confluence APIs**
+- 🧠 **AI Pipeline** for:
+  - Sentence Tokenization
+  - MiniLM Embeddings
+  - Agglomerative Clustering
+  - BART-based Summarization
+  - BERT-based NER Tagging
+  - Sentence-BERT for Semantic Search
+- 📊 **Dashboard** with categorized, searchable summaries
+- 💬 **Chatbot** interface for Q&A on internal knowledge base
+- ⚙️ **Modular Backend** using FastAPI & MongoDB
+- 🔎 **FAISS Vector Indexing** for semantic retrieval
 
-### Backend
+---
 
-1. Create a virtual environment and install dependencies:
-    ```sh
-    cd app
-    python -m venv whisper-env
-    source whisper-env/bin/activate  # On Windows: whisper-env\Scripts\activate
-    pip install -r requirements.txt
-    ```
+## 🧠 Research Motivation
 
-2. Configure credentials in [`app/config.py`](app/config.py).
+Enterprises face major friction during transitions due to lack of structured documentation. Often, tribal knowledge is lost with team movement. By integrating LLMs and retrieval systems, this project ensures:
 
-3. Start MongoDB locally.
+- **Structured retention** of critical knowledge.
+- **Efficient onboarding** through contextual access.
+- **Semantic similarity** search over large document corpora.
 
-4. Run the FastAPI server:
-    ```sh
-    uvicorn app.main:app --reload
-    ```
+This approach is inspired by academic principles in **semantic information retrieval**, **extractive & abstractive summarization**, and **contextual entity extraction**.
 
-### Frontend
+---
 
-1. Install dependencies:
-    ```sh
-    cd my-kt-frontend
-    npm install
-    ```
+## 📂 Project Structure
 
-2. Start the development server:
-    ```sh
-    npm run dev
-    ```
-
-3. Access the frontend at [http://localhost:5173](http://localhost:5173).
-
-## Project Structure
-
-```
-.
-├── app/
-│   ├── main.py
-│   ├── pipeline.py
-│   ├── endpoints/
-│   ├── connectors/
-│   └── ...
-├── my-kt-frontend/
-│   ├── src/
-│   ├── package.json
-│   └── ...
-├── faiss_search.py
-├── rag_system.py
-└── README.md
-```
-
-## License
-
-MIT License
+```bash
+├── ai_pipeline/
+│   ├── tokenizer.py         # spaCy sentence tokenizer
+│   ├── embedder.py          # MiniLM/Sentence-BERT embedding generation
+│   ├── clusterer.py         # Agglomerative clustering
+│   ├── summarizer.py        # BART-based summarizer
+│   ├── ner.py               # BERT-based NER tagging
+│   └── indexer.py           # FAISS vector index builder
+│
+├── connectors/
+│   ├── jira_fetcher.py      # Jira REST API integration
+│   ├── confluence_fetcher.py# Confluence API integration
+│
+├── backend/
+│   ├── main.py              # FastAPI entry point
+│   ├── routes/
+│   │   ├── summarize.py     # Endpoint for processing knowledge
+│   │   └── chatbot.py       # Endpoint for Q&A
+│   └── db.py                # MongoDB models
+│
+├── dashboard/
+│   └── frontend/            # React-based UI (or Streamlit alternative)
+│       ├── App.js
+│       ├── components/
+│       └── pages/
+│
+├── chatbot/
+│   └── qna_agent.py         # Semantic search + LLM response
+│
+├── requirements.txt
+├── README.md
+└── .env.example
